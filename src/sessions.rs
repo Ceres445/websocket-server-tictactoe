@@ -24,11 +24,9 @@ pub struct Session<T> {
     /// Unique ID of the Session
     pub id: String,
     /// ID of the Client who owns the Session
-    pub owner: String,
-    /// Active statuses of every Client in the Session
     ///
     /// This is intended to be used to keep a Session alive until it is forcefully closed or all of its Clients have disconnected
-    pub client_statuses: HashMap<String, bool>,
+    pub client_status: HashMap<String, bool>,
     /// Data that you want to store in a sessions
     pub data: T,
 }
