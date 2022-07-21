@@ -34,32 +34,32 @@ pub struct Session<T> {
 impl<T> Session<T> {
     /// get the number of clients in the session
     pub fn get_num_clients(&self) -> usize {
-        self.client_statuses.len()
+        self.client_status.len()
     }
 
     /// check if a client_id exists in the session
     pub fn contains_client(&self, id: &str) -> bool {
-        self.client_statuses.contains_key(id)
+        self.client_status.contains_key(id)
     }
 
     /// fetch a Vec of clients in the Session
     pub fn get_client_ids(&self) -> Vec<&String> {
-        self.client_statuses.iter().map(|(id, _)| id).collect()
+        self.client_status.iter().map(|(id, _)| id).collect()
     }
 
     /// remove a client from the Session using their ID
     pub fn remove_client(&mut self, id: &str) {
-        self.client_statuses.remove(id);
+        self.client_status.remove(id);
     }
 
     /// add a new Client into the Session and mark them as active
     pub fn insert_client(&mut self, id: &str, is_active: bool) {
-        self.client_statuses.insert(id.to_string(), is_active);
+        self.client_status.insert(id.to_string(), is_active);
     }
 
     /// fetch a Vec of all Clients in the Session that are currently active
     pub fn get_clients_with_active_status(&self, active_status: bool) -> Vec<&String> {
-        self.client_statuses
+        self.client_status
             .iter()
             .filter(|&(_, status)| *status == active_status)
             .map(|(id, _)| id)
@@ -70,9 +70,9 @@ impl<T> Session<T> {
     ///
     /// This is ideally performed whenever a client disconnects or reconnects to a Session that is still running
     pub fn set_client_active_status(&mut self, id: &str, is_active: bool) -> Result<(), String> {
-        match self.client_statuses.get(id) {
+        match self.client_status.get(id) {
             Some(_) => {
-                self.client_statuses.insert(id.to_string(), is_active);
+                self.client_status.insert(id.to_string(), is_active);
                 Ok(())
             }
             None => Err(format!(
